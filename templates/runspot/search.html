@@ -27,7 +27,7 @@
             for (var i=0; i<data.length; i++) {
                 var d = data[i];
                 console.log(d);
-                list = list + "<a href='{% url "hotelslist" %}?city_ids="+ d['dest_id'] +"'>"+ d['label'] +"</a></br>";
+                list = list + "<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label'] +"</a></br>";
             }
             $("#results").html(list);
         }
