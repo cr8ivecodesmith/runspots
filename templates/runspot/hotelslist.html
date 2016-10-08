@@ -2,6 +2,8 @@
 
 {% block content %}
     <div id="hotelslist">
-        {{data}}
+        {% for hotel in hotels %}
+            <a href="{% url 'hotel' hotel_id=hotel.hotel_id %}">{{ hotel.name }}</a><br>
+        {% endfor %}
     </div>
 {% endblock content %}
