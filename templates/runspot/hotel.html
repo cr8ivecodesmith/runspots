@@ -6,6 +6,12 @@ Name: {{ name }}<br>
 Address: {{ address }}<br>
 </div>
 <div>
-{{trail}}
+<ul>
+{% for t in trails %}
+<li>
+    <a href="{{t.url}}">{{t.name}}, {{t.activity_type_name}}</a>
+</li>
+{% endfor %}
+</ul>
 </div>
 {% endblock content%}

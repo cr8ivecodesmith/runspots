@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    CITY SEARCH
+    <input type="text" id="text"/>
+    <input type="button" value="Search" id="search"/>
+
+    <div id="results">
+    </div>
+{% endblock content %}
+
+{% block page_scripts %}
+    <script>
+        $(document).ready(function() {
+            $("#search").click(search);
+        });
+
+        function search() {
+            $.get(
+                "{% url 'autocomplete' %}",
+                {text: $("#text").val()},
+                showResults
+            );
+        }
+
+        function showResults(data) {
+            var list = "";
+            for (var i=0; i<data.length; i++) {
+                var d = data[i];
+                list = list + "<a href='{% url "trailslist" %}?city="+ d['label'] +"&city_id=" + d['dest_id'] + "'>"+ d['label'] +"</a></br>";
+            }
+            $("#results").html(list);
+        }
+    </script>
+{% endblock page_scripts %}

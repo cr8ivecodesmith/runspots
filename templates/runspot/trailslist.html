@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    TRAILS
+    <div>
+    {% for t in trails %}
+        {% for a in t.activities %}
+        <a href="{% url 'trail' %}?city={{city}}&name={{a.name|urlencode}}&activity={{a.activity_type_name|urlencode}}&description={{a.description}}&url={{a.url}}&lat={{t.lat}}&lon={{t.lon}}">
+            {{ a.name }}
+        </a><br>
+        {% endfor %}
+    {% endfor %}
+    </div>
+{% endblock content %}

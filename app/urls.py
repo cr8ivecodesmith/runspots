@@ -15,12 +15,25 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from app.runspot.views import SearchView, AutoCompleteView, HotelsListView, HotelView
+from app.runspot.views import (
+    SearchView,
+    AutoCompleteView,
+    HotelsListView,
+    HotelView,
+    CitySearchView,
+    TrailsListView,
+    TrailView)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    url(r'^citysearch/', CitySearchView.as_view(), name='citysearch'),
+    url(r'^trailslist/', TrailsListView.as_view(), name='trailslist'),
+    url(r'^trail/', TrailView.as_view(), name='trail'),
+
+
     url(r'^auto/', AutoCompleteView.as_view(), name='autocomplete'),
     url(r'^list/', HotelsListView.as_view(), name='hotelslist'),
     url(r'^hotel/(?P<hotel_id>[0-9]+)', HotelView.as_view(), name='hotel'),
-    url(r'', SearchView.as_view(), name='search'),
+    url('', SearchView.as_view(), name='search'),
 ]
