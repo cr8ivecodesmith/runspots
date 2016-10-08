@@ -54,6 +54,14 @@ build_prod:
 	source scripts/update_perms.sh
 	source requirements/install_pip.sh prod
 
+reload_dev:
+	pip install -r requirements/base.txt
+	pip install -r requirements/dev.txt
+	python manage.py collectstatic --noinput
+	make gunicorn_restart
+	make beat_restart
+	make workers_restart
+
 deploy:
 	source scripts/run_deploy.sh
 
