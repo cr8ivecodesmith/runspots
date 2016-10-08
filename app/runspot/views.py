@@ -16,7 +16,6 @@ class AutoCompleteView(View):
             'https://hacker235:pBo8BAC2Xu@distribution-xml.booking.com/json/bookings.autocomplete?'+\
             'text={}&languagecode=en'.format(text)
         )
-        print(r.json())
         labels = [{'label': x['label'], 'dest_id': x['city_ufi'] or x['dest_id']} for x in r.json()]
         return JsonResponse(labels, safe=False)
 
@@ -46,18 +45,23 @@ class HotelView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         hotel_id = kwargs.get('hotel_id')
-        print(kwargs)
         req = 'https://hacker235:pBo8BAC2Xu@distribution-xml.booking.com/' + \
-            'json/bookings.getHotels?hotel_ids={}'.format(hotel_id)
+              'json/bookings.getHotels?hotel_ids={}'.format(hotel_id)
         r = requests.get(req)
         x = r.json()[0]
-        print(x)
+        trail_req = 'https://trailapi-trailapi.p.mashape.com/?' + \
+            'lat={}&lon={}&limit=25'.format(
+                x['location']['latitude'], x['location']['longitude'])
+        trail = requests.get(trail_req, headers={
+            'X-Mashape-Key': 'vuB0epoteBmsh0AGmCn7TMUYflKgp1sVcMPjsnA7BlatcCvEaK',
+            'Accept': 'text/plain'})
         context = {
             'name': x['name'],
             'address': x['address'],
             'hotel_id': x['hotel_id'],
             'latitude': x['location']['latitude'],
-            'longitude': x['location']['longitude']
+            'longitude': x['location']['longitude'],
+            'trail': trail.json()
         }
         return context
         
