@@ -11,7 +11,9 @@ build
 eggs
 parts
 bin
-var
+var/run/*
+var/logs/*
+var/tmp/*
 sdist
 develop-eggs
 .installed.cfg
@@ -66,3 +68,6 @@ media/
 # OS Env
 .env
 *.env
+
+# Settings
+app/settings/dev_*

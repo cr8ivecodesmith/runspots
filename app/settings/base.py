@@ -73,6 +73,7 @@ THIRD_PARTY_APPS = [
     'djcelery',
 ]
 LOCAL_APPS = [
+    'app.runspot',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
