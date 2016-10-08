@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ trail.name }}<br>
+{{ trail.activity_type_name }}<br>
+{{ trail.description }}<br>
+<ul>
+{% for h in hotels %}
+<li>
+{{h.name}}
+</li>
+{% endfor %}
+</ul>
+{% endblock content %}
