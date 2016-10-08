@@ -1,8 +1,12 @@
 Django==1.9.10
+djangorestframework
 psycopg2
+requests
 
 celery
 django-celery
+
+gunicorn
 
 # PEP-8 conventions
 flake8
