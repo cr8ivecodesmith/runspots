@@ -7,9 +7,6 @@ services:
             context: ../
             dockerfile: DockerfileNginx
         image: runspots_nginx
-        ports:
-            - "80:80"
-            - "443:443"
         container_name: runspots_nginx
 
     postgres:
@@ -18,8 +15,6 @@ services:
         volumes:
             - ../scripts/init-db-user.sh:/docker-entrypoint-initdb.d/init-db-user.sh
             - ../var/db/postgres:/var/lib/postgresql/data/
-        ports:
-            - "8013:5432"
         env_file:
             - ../vars.env
         container_name: runspots_db
@@ -36,8 +31,6 @@ services:
         image: rabbitmq:latest
         volumes:
             - ../var/db/rabbitmq:/var/lib/rabbitmq/mnesia/rabbit@runspots_rq
-        ports:
-            - "8014:15672"
         hostname: "runspots_rq"
         env_file:
             - ../vars.env
@@ -53,8 +46,5 @@ services:
         env_file:
             - ../vars.env
         container_name: runspots_web
-        ports:
-            - "8015:8000"
-            - "2767:22"
         working_dir: "/srv/caffeine/project"
         command: scripts/docker_start.sh

@@ -7,6 +7,9 @@ services:
             service: nginx
         volumes_from:
             - web
+        ports:
+            - "80:80"
+            - "443:443"
         links:
             - rabbitmq
             - redis
@@ -17,6 +20,8 @@ services:
         extends:
             file: base.yml
             service: postgres
+        ports:
+            - "8013:5432"
 
     redis:
         extends:
@@ -27,8 +32,13 @@ services:
         extends:
             file: base.yml
             service: rabbitmq
+        ports:
+            - "8014:15672"
 
     web:
         extends:
             file: base.yml
             service: web
+        ports:
+            - "8015:8000"
+            - "2767:22"
