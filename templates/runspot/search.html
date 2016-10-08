@@ -1,35 +1,81 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <input type="text" id="text"/>
-    <input type="button" value="Search" id="search"/>
+<section id="content">
+    <div class="container">
+        <div id="c-grid" class="clearfix" data-columns>
+            <div class="card c-dark palette-Light-Blue bg">
+                <div class="card-header">
+                    <h2>
+                    </h2>
+                </div>
+                <div class="card-body card-padding">
+                    <h2 class="m-t-0 m-b-15 c-white">
+                        hello
+                    </h2>
 
-    <div id="results">
+                </div>
+            </div>
+
+            <div class="card c-dark palette-Green-A700 bg">
+                <div class="card-header">
+                    <!--
+                    <h2>Website Traffics <small>Nullam Adipiscing Pellentesque</small></h2>
+                    -->
+                </div>
+                <div class="card-body card-padding">
+                    <h2 class="m-t-0 m-b-15 c-white">
+                    </h2>
+                </div>
+            </div>
+
+        </div>
     </div>
+</section>
+<script type="text/html">
+
+</script>
 {% endblock content %}
 
 {% block page_scripts %}
-    <script>
-        $(document).ready(function() {
-            $("#search").click(search);
-        });
+<script>
 
-        function search() {
-            $.get(
-                "{% url 'autocomplete' %}",
-                {text: $("#text").val()},
-                showResults
-            );
-        }
+function search() {
+    $.ajax({
+        url: "{% url 'autocomplete' %}", 
+        method: "GET",
+        dataType: "json",
+    })
+        .done(function(data, txtStatus, jqxhr) {
+            console.log('Search found!');
+            console.log(data);
 
-        function showResults(data) {
-            var list = "";
-            for (var i=0; i<data.length; i++) {
-                var d = data[i];
-                console.log(d);
-                list = list + "<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label'] +"</a></br>";
-            }
-            $("#results").html(list);
-        }
-    </script>
+            url = '<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label']+"</a>';
+
+            //showResults(data);
+        })
+        .fail(function(jqxhr, txtStatus, error) {
+            console.error(error);
+        })
+}
+
+
+function showResults(data) {
+    var list = "";
+    for (var i=0; i<data.length; i++) {
+        var d = data[i];
+        console.log(d);
+    }
+}
+
+
+$(document).ready(function() {
+
+    // Handle search event
+    $('#main-search').on('keydown', function (event) {
+        if (event.keyCode === 13) search();
+    });
+
+});
+</script>
 {% endblock page_scripts %}

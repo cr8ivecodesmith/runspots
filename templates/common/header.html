@@ -1,0 +1,57 @@
+<header id="header" class="media">
+    <div class="pull-left h-logo">
+        <a href="index.html" class="hidden-xs">
+            RunSpots
+            <small>outdoor spots nearby</small>
+        </a>
+
+        {% comment %}
+        <div class="menu-collapse" data-ma-action="sidebar-open" data-ma-target="main-menu">
+            <div class="mc-wrap">
+                <div class="mcw-line top palette-White bg"></div>
+                <div class="mcw-line center palette-White bg"></div>
+                <div class="mcw-line bottom palette-White bg"></div>
+            </div>
+        </div>
+        {% endcomment %}
+    </div>
+
+    <ul class="pull-right h-menu">
+        <li class="hm-search-trigger">
+            <a href="" data-ma-action="search-open">
+                <i class="hm-icon zmdi zmdi-search"></i>
+            </a>
+        </li>
+
+        {# Right-hand menu #}
+        {% comment %}
+        <li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" href=""><i class="hm-icon zmdi zmdi-more-vert"></i></a>
+            <ul class="dropdown-menu dm-icon pull-right">
+                <li class="hidden-xs">
+                    <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
+                </li>
+                <li>
+                    <a data-action="clear-localstorage" href=""><i class="zmdi zmdi-delete"></i> Clear Local Storage</a>
+                </li>
+                <li>
+                    <a href=""><i class="zmdi zmdi-face"></i> Privacy Settings</a>
+                </li>
+                <li>
+                    <a href=""><i class="zmdi zmdi-settings"></i> Other Settings</a>
+                </li>
+            </ul>
+        </li>
+        {% endcomment %}
+
+    </ul>
+
+    <div class="media-body h-search">
+        {# Search Form #}
+        <div class="p-relative">
+            <input id="main-search" type="text" class="hs-input" placeholder="Search places">
+            <i class="zmdi zmdi-search hs-reset" data-ma-action="search-clear"></i>
+        </div>
+    </div>
+
+</header>

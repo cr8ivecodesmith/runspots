@@ -1,5 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
 <html lang="en-us">
 <head>
 {# Meta Section #}
@@ -22,13 +23,16 @@
 {# Icons Section #}
 {% include 'common/icons.html' %}
 </head>
-<body>
+<body data-ma-header="teal">
 {% block body %}
     {% block header %}
+    {% include 'common/header.html' %}
     {% endblock header %}
 
+    <section id="main">
     {% block content %}
     {% endblock content %}
+    </section>
 
     {% block footer %}
     {% endblock footer %}
