@@ -71,6 +71,11 @@ function searchHotels(target, dump) {
     });
 }
 
+function searchTrails(target, dump) {
+    console.log(dump.hotel_id);
+    window.open('/hoteltrail/' + dump.hotel_id + '/');
+}
+
 
 /**
  * =============================
@@ -96,6 +101,7 @@ $("#searchList").on("click", "result", function () {
     console.log(dump); 
 
     if (context === "suggestList") searchHotels(target, dump);
+    if (context === "hotelList") searchTrails(target, dump);
 });
 
 });

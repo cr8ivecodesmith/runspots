@@ -1,0 +1,25 @@
+<script type="text/html" id="tplSearchTrailList">
+<%
+    _.each(items, function(item, key, list) {
+        console.log('template:', item)
+        var context = "trailList",
+            target = "/hoteltrail/" + item.id,
+            dump = JSON.stringify(item);
+%>
+
+<result data-context="<%= context %>"
+    data-target="<%= target %>" data-dump='<%= dump %>'
+    class="waves-effect"
+>
+<div class="card c-dark palette-Light-Blue bg">
+    <div class="card-body card-padding">
+        <h2 class="m-t-0 m-b-15 c-white">
+            <%= item.name %>
+        </h2>
+    </div>
+</div>
+</result>
+
+<% }); %>
+</script>
+
