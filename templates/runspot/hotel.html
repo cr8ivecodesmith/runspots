@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
+{% block head_styles %}
+<style>
+#map {
+    height: 1000px;
+    width: 1000px;
+}
+</style>
+{% endblock head_styles %}
+
+
 {% block content %}
 <div>
 Name: {{ name }}<br>
@@ -8,10 +18,70 @@ Address: {{ address }}<br>
 <div>
 <ul>
 {% for t in trails %}
+    {% for a in t.activities %}
 <li>
-    <a href="{{t.url}}">{{t.name}}, {{t.activity_type_name}}</a>
+    <a href="{{a.url}}">{{a.name}}, {{a.activity_type_name}}</a>
 </li>
+    {% endfor %}
 {% endfor %}
 </ul>
 </div>
+<div id="map"></div>
 {% endblock content%}
+
+{% block scripts %}
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFqD6amaxachnfRj7_kP_8V8vHAaouI68&callback=initMap">
+</script>
+{% endblock scripts %}
+
+{% block page_scripts %}
+<script>
+function initMap() {
+    var myLatLng = {lat: {{latitude}}, lng: {{longitude}}};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: myLatLng
+    });
+
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: 'Hello World!'
+    });
+
+    var hotelDescription = "<b><a href='{{url}}'>{{name}}</a></b><br>{{address}}";
+
+    var infoWindow = new google.maps.InfoWindow();
+
+    //Attach click event to the marker.
+    google.maps.event.addListener(marker, "click", function (e) {
+        //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+        infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + hotelDescription + "</div>");
+        infoWindow.open(map, marker);
+    });
+
+    {% for t in trails %}
+        {% for a in t.activities %}
+            var marker{{forloop.parentloop.counter}}{{forloop.counter}} = new google.maps.Marker({
+                position: {lat: {{t.lat}}, lng: {{t.lon}}},
+                map: map,
+                title: "{{a.name}}",
+                icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+            });
+
+            //Attach click event to the marker.
+            (function (marker{{forloop.parentloop.counter}}{{forloop.counter}}) {
+                google.maps.event.addListener(marker{{forloop.parentloop.counter}}{{forloop.counter}}, "click", function (e) {
+                    //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                    infoWindow.setContent("<div style = 'width:200px;min-height:40px'><b><a href='{{a.url}}'>{{a.name}}</a></b><br>{{a.activity_type_name}}</div>");
+                    infoWindow.open(map, marker{{forloop.parentloop.counter}}{{forloop.counter}});
+                });
+            })(marker{{forloop.parentloop.counter}}{{forloop.counter}});
+        {% endfor %}
+    {% endfor %}
+}
+</script>
+{% endblock page_scripts %}
+
+

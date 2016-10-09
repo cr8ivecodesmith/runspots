@@ -64,7 +64,8 @@ class HotelView(TemplateView):
             'hotel_id': x['hotel_id'],
             'latitude': x['location']['latitude'],
             'longitude': x['location']['longitude'],
-            'trails': activities
+            'url': x['url'],
+            'trails': trail.json()['places']
         }
         return context
         
