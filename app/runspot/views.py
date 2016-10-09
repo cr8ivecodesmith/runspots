@@ -28,14 +28,14 @@ class HotelsListView(View):
         if city_id:
             req += '?city_ids={}'.format(city_id)
         r = requests.get(req)
-        hotels = [{
+        '''hotels = [{
             'name': x['name'],
             'address': x['address'],
             'hotel_id': x['hotel_id'],
             'latitude': x['location']['latitude'],
             'longitude': x['location']['longitude']
-        } for x in r.json()]
-        return JsonResponse({'hotels': hotels}, safe=False)
+        } for x in r.json()]'''
+        return JsonResponse({'hotels': r.json()}, safe=False)
         
 
 class HotelView(View):
