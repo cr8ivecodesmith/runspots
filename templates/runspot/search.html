@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% comment %}
 <section id="content">
     <div class="container">
         <div id="c-grid" class="clearfix" data-columns>
+
             <div class="card c-dark palette-Light-Blue bg">
                 <div class="card-header">
                     <h2>
@@ -17,7 +19,9 @@
                 </div>
             </div>
 
+
             <div class="card c-dark palette-Green-A700 bg">
+
                 <div class="card-header">
                     <!--
                     <h2>Website Traffics <small>Nullam Adipiscing Pellentesque</small></h2>
@@ -27,18 +31,60 @@
                     <h2 class="m-t-0 m-b-15 c-white">
                     </h2>
                 </div>
+
             </div>
 
         </div>
     </div>
 </section>
-<script type="text/html">
+{% endcomment %}
 
+{# template: tplSearchSuggestList #}
+<script type="text/html" id="tplSearchSuggestList">
+<section id="content">
+    <div class="container">
+        <div id="c-grid" class="clearfix" data-columns>
+
+            <%
+                _.each(items, function(item, key, list) {
+                    console.log('label: ', item.label);
+                    console.log('dest_id: ', item.dest_id);
+
+                    /*
+                    url = '<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label']+"</a>';
+                    */
+            %>
+
+            <a href="{% url 'hotelslist' %}?city_id=<%= item.dest_id %>">
+            <div class="card c-dark palette-Light-Blue bg">
+                <div class="card-header">
+                    <%= item.label %>
+                </div>
+                <div class="card-body card-padding">
+                    <h2 class="m-t-0 m-b-15 c-white">
+                        <%= item.label %>
+                    </h2>
+                </div>
+            </div>
+            </a>
+
+            <% }); %>
+
+        </div>
+    </div>
+</section>
 </script>
+
+
+{# target: trgSearchSuggestList #}
+<div id="trgSearchSuggestList"></div>
+
+
 {% endblock content %}
 
 {% block page_scripts %}
-<script>
+<script type="text/javascript">
+$(document).ready(function() {
 
 function search() {
     $.ajax({
@@ -46,17 +92,19 @@ function search() {
         method: "GET",
         dataType: "json",
     })
-        .done(function(data, txtStatus, jqxhr) {
-            console.log('Search found!');
-            console.log(data);
+    .done(function(data, txtStatus, jqxhr) {
+        var tpl = $("#tplSearchSuggestList").html();
 
-            url = '<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label']+"</a>';
+        console.log('Search found!');
+        console.log(data);
 
-            //showResults(data);
-        })
-        .fail(function(jqxhr, txtStatus, error) {
-            console.error(error);
-        })
+        $("#trgSearchSuggestList").html(_.template(tpl)({
+            items: data
+        }));
+    })
+    .fail(function(jqxhr, txtStatus, error) {
+        console.error(error);
+    });
 }
 
 
@@ -69,12 +117,11 @@ function showResults(data) {
 }
 
 
-$(document).ready(function() {
+// Handle search event
+$('#mainSearch').on('keydown', function (event) {
+    if (event.keyCode === 13) search();
+});
 
-    // Handle search event
-    $('#main-search').on('keydown', function (event) {
-        if (event.keyCode === 13) search();
-    });
 
 });
 </script>
