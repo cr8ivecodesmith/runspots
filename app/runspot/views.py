@@ -22,8 +22,8 @@ class AutoCompleteView(View):
 
 class HotelsListView(View):
 
-    def get_context_data(self, *args, **kwargs):
-        city_id = self.request.GET.get('city_id')
+    def get(self, request, *args, **kwargs):
+        city_id = request.GET.get('city_id')
         req = 'https://hacker235:pBo8BAC2Xu@distribution-xml.booking.com/json/bookings.getHotels'
         if city_id:
             req += '?city_ids={}'.format(city_id)
@@ -40,7 +40,7 @@ class HotelsListView(View):
 
 class HotelView(View):
 
-    def get_context_data(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         hotel_id = kwargs.get('hotel_id')
         req = 'https://hacker235:pBo8BAC2Xu@distribution-xml.booking.com/' + \
               'json/bookings.getHotels?hotel_ids={}'.format(hotel_id)
