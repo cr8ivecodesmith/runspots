@@ -66,6 +66,34 @@ class HotelView(View):
         }
         return JsonResponse(context, safe=False)
         
+class HotelTrailView(TemplateView):
+    template_name = 'runspot/hoteltrail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        hotel_id = kwargs.get('hotel_id')
+        req = 'https://hacker235:pBo8BAC2Xu@distribution-xml.booking.com/' + \
+              'json/bookings.getHotels?hotel_ids={}'.format(hotel_id)
+        hotel = requests.get(req)
+        x = hotel.json()[0]
+        trail_req = 'https://trailapi-trailapi.p.mashape.com/?' + \
+            'lat={}&lon={}&limit=25'.format(
+                x['location']['latitude'], x['location']['longitude'])
+        trail = requests.get(trail_req, headers={
+            'X-Mashape-Key': 'vuB0epoteBmsh0AGmCn7TMUYflKgp1sVcMPjsnA7BlatcCvEaK',
+            'Accept': 'text/plain'})
+        activities = []
+        for t in trail.json()['places']:
+            activities.extend(t['activities'])
+        context = {
+            'name': x['name'],
+            'address': x['address'],
+            'hotel_id': x['hotel_id'],
+            'latitude': x['location']['latitude'],
+            'longitude': x['location']['longitude'],
+            'url': x['url'],
+            'trails': trail.json()['places']
+        }
+        return context
 
 class CitySearchView(TemplateView):
     template_name = 'runspot/citysearch.html'
