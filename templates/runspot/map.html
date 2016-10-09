@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script src="{% static 'vendor/bootstrap/themes/mae/1.0/vendors/bower_components/jquery/dist/jquery.min.js' %}">
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFqD6amaxachnfRj7_kP_8V8vHAaouI68&callback=initMap">
+        </script>
+        <script>
+        var map;
+        var tmarkers = [];
+        var infos = [];
+
+        function initMap() {
+            var myLatLng = {lat: 0, lng: 0};
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: myLatLng
+            });
+        }
+
+        function setMap(data) {
+            console.log(data);
+            deleteMarkers();
+            map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(data.latitude), lng: parseFloat(data.longitude)},
+                map: map,
+                title: 'Hello World!'
+            });
+
+            var hotelDescription = "<b><a href='"+data.url+"'>"+data.name+"</a></b><br>"+data.address;
+
+            var infoWindow = new google.maps.InfoWindow();
+
+            //Attach click event to the marker.
+            google.maps.event.addListener(marker, "click", function (e) {
+                //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + hotelDescription + "</div>");
+                infoWindow.open(map, marker);
+            });
+            tmarkers.push(marker);
+
+            for (var i=0; i<data.trails.length; i++) {
+                var t = data.trails[i];
+                for (var j=0; j<t.activities.length; j++) {
+                    var a = t.activities[j];
+                    var newMarker = new google.maps.Marker({
+                        position: {lat: t.lat, lng: t.lon},
+                        map: map,
+                        title: "{{a.name}}",
+                        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                    });
+
+                    //Attach click event to the marker.
+                    var info = (function (newMarker, name, url, activity_type_name) {
+                    google.maps.event.addListener(newMarker, "click", function (e) {
+                            //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                            infoWindow.setContent("<div style = 'width:200px;min-height:40px'><b><a href='"+url+"'>"+name+"</a></b><br>"+activity_type_name+"</div>");
+                            infoWindow.open(map, newMarker);
+                        });
+                    })(newMarker, a.name, a.url, a.activity_type_name);
+                    tmarkers.push(newMarker);
+                    infos.push(info);
+                }
+            }
+            showMarkers();
+        }
+
+
+        // Sets the map on all markers in the array.
+        function setMapOnAll(map) {
+            for (var i = 0; i < tmarkers.length; i++) {
+                tmarkers[i].setMap(map);
+            }
+        }
+
+        // Removes the markers from the map, but keeps them in the array.
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        // Shows any markers currently in the array.
+        function showMarkers() {
+            setMapOnAll(map);
+        }
+
+        // Deletes all markers in the array by removing references to them.
+        function deleteMarkers() {
+            clearMarkers();
+            tmarkers = [];
+        }
+
+        </script>
+    </body>
+</html>

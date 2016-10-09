@@ -22,7 +22,9 @@ from app.runspot.views import (
     HotelView,
     CitySearchView,
     TrailsListView,
-    TrailView)
+    TrailView,
+    MapView,
+    HotelTrailView)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,10 +32,12 @@ urlpatterns = [
     url(r'^citysearch/', CitySearchView.as_view(), name='citysearch'),
     url(r'^trailslist/', TrailsListView.as_view(), name='trailslist'),
     url(r'^trail/', TrailView.as_view(), name='trail'),
+    url(r'^map/', MapView.as_view(), name='map'),
 
 
     url(r'^auto/', AutoCompleteView.as_view(), name='autocomplete'),
     url(r'^list/', HotelsListView.as_view(), name='hotelslist'),
     url(r'^hotel/(?P<hotel_id>[0-9]+)', HotelView.as_view(), name='hotel'),
+    url(r'^hoteltrail/(?P<hotel_id>[0-9]+)', HotelTrailView.as_view(), name='hoteltrail'),
     url('', SearchView.as_view(), name='search'),
 ]
