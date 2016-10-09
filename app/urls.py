@@ -22,7 +22,8 @@ from app.runspot.views import (
     HotelView,
     CitySearchView,
     TrailsListView,
-    TrailView)
+    TrailView,
+    MapTest)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^citysearch/', CitySearchView.as_view(), name='citysearch'),
     url(r'^trailslist/', TrailsListView.as_view(), name='trailslist'),
     url(r'^trail/', TrailView.as_view(), name='trail'),
+    url(r'^test/', MapTest.as_view()),
 
 
     url(r'^auto/', AutoCompleteView.as_view(), name='autocomplete'),

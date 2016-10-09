@@ -96,3 +96,7 @@ class TrailView(TemplateView):
         r = requests.get(req)
         print(r.json())
         return {'trail': self.request.GET, 'hotels': r.json()} 
+
+
+class MapTest(TemplateView):
+    template_name = 'runspot/map.html'
