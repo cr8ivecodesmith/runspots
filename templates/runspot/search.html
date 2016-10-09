@@ -1,83 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% comment %}
-<section id="content">
-    <div class="container">
-        <div id="c-grid" class="clearfix" data-columns>
-
-            <div class="card c-dark palette-Light-Blue bg">
-                <div class="card-header">
-                    <h2>
-                    </h2>
-                </div>
-                <div class="card-body card-padding">
-                    <h2 class="m-t-0 m-b-15 c-white">
-                        hello
-                    </h2>
-
-                </div>
-            </div>
-
-
-            <div class="card c-dark palette-Green-A700 bg">
-
-                <div class="card-header">
-                    <!--
-                    <h2>Website Traffics <small>Nullam Adipiscing Pellentesque</small></h2>
-                    -->
-                </div>
-                <div class="card-body card-padding">
-                    <h2 class="m-t-0 m-b-15 c-white">
-                    </h2>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</section>
-{% endcomment %}
 
 {# template: tplSearchSuggestList #}
-<script type="text/html" id="tplSearchSuggestList">
+{% include 'runspot/tpl_search_suggest_list.html' %}
+
+{# template: tplSearchHotelList #}
+{% include 'runspot/tpl_search_hotel_list.html' %}
+
 <section id="content">
     <div class="container">
         <div id="c-grid" class="clearfix" data-columns>
-
-            <%
-                _.each(items, function(item, key, list) {
-                    console.log('label: ', item.label);
-                    console.log('dest_id: ', item.dest_id);
-
-                    /*
-                    url = '<a href='{% url "hotelslist" %}?city_id="+ d['dest_id'] +"'>"+ d['label']+"</a>';
-                    */
-            %>
-
-            <a href="{% url 'hotelslist' %}?city_id=<%= item.dest_id %>">
-            <div class="card c-dark palette-Light-Blue bg">
-                <div class="card-header">
-                    <%= item.label %>
-                </div>
-                <div class="card-body card-padding">
-                    <h2 class="m-t-0 m-b-15 c-white">
-                        <%= item.label %>
-                    </h2>
-                </div>
-            </div>
-            </a>
-
-            <% }); %>
-
+        <div id="searchList">
+        </div>
         </div>
     </div>
 </section>
-</script>
-
-
-{# target: trgSearchSuggestList #}
-<div id="trgSearchSuggestList"></div>
 
 
 {% endblock content %}
@@ -86,19 +24,20 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-function search() {
+function searchMain() {
     $.ajax({
         url: "{% url 'autocomplete' %}", 
         method: "GET",
+        data: {
+            text: $("#mainSearch").val(),
+        },
         dataType: "json",
     })
     .done(function(data, txtStatus, jqxhr) {
         var tpl = $("#tplSearchSuggestList").html();
-
         console.log('Search found!');
-        console.log(data);
 
-        $("#trgSearchSuggestList").html(_.template(tpl)({
+        $("#searchList").html(_.template(tpl)({
             items: data
         }));
     })
@@ -108,20 +47,29 @@ function search() {
 }
 
 
-function showResults(data) {
-    var list = "";
-    for (var i=0; i<data.length; i++) {
-        var d = data[i];
-        console.log(d);
-    }
-}
+/**
+ * =============================
+ * MAIN EVENT HANDLERS
+ * =============================
+ */
 
-
-// Handle search event
-$('#mainSearch').on('keydown', function (event) {
-    if (event.keyCode === 13) search();
+// Handle main search event
+$("#mainSearch").on("keydown", function (event) {
+    if (event.keyCode === 13) searchMain();
 });
 
+
+// Handle result list click event
+$("#searchList").on("click", "result", function () {
+    var el = $(this),
+        context = el.data("context"),
+        target = el.data("target"),
+        dump = el.data("dump");
+
+    console.log(context); 
+    console.log(target); 
+    console.log(dump); 
+});
 
 });
 </script>

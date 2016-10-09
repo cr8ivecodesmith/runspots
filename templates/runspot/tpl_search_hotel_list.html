@@ -1,0 +1,27 @@
+<script type="text/html" id="tplSearchHotelList">
+<%
+    _.each(items, function(item, key, list) {
+        console.log(item);
+        var context, target, dump;
+        /*
+        var context = "hotelList",
+            target = "{% url 'hotelslist' %}?city_id=" + item.dest_id,
+            dump = JSON.stringify(item);
+        */
+
+%>
+
+<result data-context="<%= context %>"
+    data-target="<%= target %>" data-dump='<%= dump %>'
+    class="waves-effect"
+>
+<div class="card c-dark palette-Light-Blue bg">
+    <div class="card-body card-padding">
+        <h2 class="m-t-0 m-b-15 c-white">
+        </h2>
+    </div>
+</div>
+</result>
+
+<% }); %>
+</script>
