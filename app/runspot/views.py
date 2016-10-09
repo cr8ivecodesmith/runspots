@@ -20,8 +20,7 @@ class AutoCompleteView(View):
         return JsonResponse(labels, safe=False)
 
 
-class HotelsListView(TemplateView):
-    template_name = 'runspot/hotelslist.html'
+class HotelsListView(View):
 
     def get_context_data(self, *args, **kwargs):
         city_id = self.request.GET.get('city_id')
@@ -36,12 +35,10 @@ class HotelsListView(TemplateView):
             'latitude': x['location']['latitude'],
             'longitude': x['location']['longitude']
         } for x in r.json()]
-        context = {'hotels': hotels}
-        return context
+        return JsonResponse({'hotels': hotels}, safe=False)
         
 
-class HotelView(TemplateView):
-    template_name = 'runspot/hotel.html'
+class HotelView(View):
 
     def get_context_data(self, *args, **kwargs):
         hotel_id = kwargs.get('hotel_id')
@@ -67,7 +64,7 @@ class HotelView(TemplateView):
             'url': x['url'],
             'trails': trail.json()['places']
         }
-        return context
+        return JsonResponse(context, safe=False)
         
 
 class CitySearchView(TemplateView):
