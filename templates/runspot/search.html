@@ -25,6 +25,7 @@
 $(document).ready(function() {
 
 function searchMain() {
+    console.log("Searching main...");
     $.ajax({
         url: "{% url 'autocomplete' %}", 
         method: "GET",
@@ -42,6 +43,30 @@ function searchMain() {
         }));
     })
     .fail(function(jqxhr, txtStatus, error) {
+        console.log('Search error!');
+        console.error(error);
+    });
+}
+
+
+function searchHotels(target, dump) {
+    console.log("Searching hotels...");
+    $.ajax({
+        url: target, 
+        method: "GET",
+        dataType: "json",
+    })
+    .done(function(data, txtStatus, jqxhr) {
+        var tpl = $("#tplSearchHotelList").html();
+        console.log('Search found!');
+        console.log(data);
+
+        $("#searchList").html(_.template(tpl)({
+            items: data.hotels,
+        }));
+    })
+    .fail(function(jqxhr, txtStatus, error) {
+        console.log('Search error!');
         console.error(error);
     });
 }
@@ -69,6 +94,8 @@ $("#searchList").on("click", "result", function () {
     console.log(context); 
     console.log(target); 
     console.log(dump); 
+
+    if (context === "suggestList") searchHotels(target, dump);
 });
 
 });

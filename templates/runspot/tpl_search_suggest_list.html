@@ -1,9 +1,6 @@
 <script type="text/html" id="tplSearchSuggestList">
 <%
     _.each(items, function(item, key, list) {
-        console.log('label: ', item.label);
-        console.log('dest_id: ', item.dest_id);
-        console.log('item: ', JSON.stringify(item));
         var context = "suggestList",
             target = "{% url 'hotelslist' %}?city_id=" + item.dest_id,
             dump = JSON.stringify(item);
